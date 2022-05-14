@@ -73,6 +73,20 @@ begin
   Result := Self.IsOpen() and Self.GetWorldSwitcherButton(ERSLogoutWorldSwitcherButton.CLOSE).Visible();
 end;
 
+function TRSLogout.OpenWorldSwitcher(Attempts: Int32 = 5; TryTime: Int32 = 20000): Boolean;
+var
+  Interval: UInt64;
+begin
+  if (not Self.Open()) then
+    Exit;
+
+  Interval := TryTime div Attempts;
+
+  for 1 to Attempts do
+    if Self.GetButton(ERSLogoutButton.WORLD_SWITCHER).Click() and WaitUntil(Self.IsWorldSwitcherOpen(), 500, Interval + SRL.NormalRange(-2000, 2000)) then
+      Exit(True);
+end;
+
 function TRSLogout.CloseWorldSwitcher: Boolean;
 begin
   if Self.IsOpen() and (not Self.IsWorldSwitcherOpen()) then

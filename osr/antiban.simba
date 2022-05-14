@@ -509,6 +509,31 @@ begin
   HoverSkill(Self.Skills[Random(Length(Self.Skills))], SRL.TruncatedGauss(1000, 10000), SRL.Dice(50));
 end;
 
+procedure TAntiban.HoverCombatSkill;
+var
+  Tab: ERSGameTab;
+  CbSkill: ERSSkill;
+begin
+  case random(7) of
+    1: CbSkill := ERSSkill.HITPOINTS;
+    2: CbSkill := ERSSkill.ATTACK;
+    3: CbSkill := ERSSkill.STRENGTH;
+    4: CbSkill := ERSSkill.DEFENCE;
+    5: CbSkill := ERSSkill.RANGE;
+    6: CbSkill := ERSSkill.PRAYER;
+    7: CbSkill := ERSSkill.MAGIC;
+  end;
+
+  Tab := GameTabs.GetCurrentTab();
+
+  if Stats.MouseOver(CbSkill) then
+  begin
+    Self.DebugLn('Hovering random combat skill');
+    SRL.TruncatedGauss(1000, 10000);
+    GameTabs.Open(Tab);
+  end;
+end;
+
 procedure TAntiban.LoseFocus;
 begin
   RSClient.LoseFocus();
